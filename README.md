@@ -1,1 +1,1 @@
-# mern-tuto
+# mern-e-commerce-store
