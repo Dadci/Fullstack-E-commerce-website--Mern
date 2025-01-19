@@ -9,8 +9,6 @@ import cors from 'cors';
 import seedAdmin from "./seedAdmin.js";
 
 
-
-
 const app = express();
 dotenv.config();
 
@@ -25,10 +23,10 @@ app.use('/api/carts', cartRoute);
 
 
 // Define port
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5500;
 
 // Basic route
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
     res.json({ message: 'Welcome to the MERN application.' });
 });
 
