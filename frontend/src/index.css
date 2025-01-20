@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+
+.nav-link {
+    @apply text-gray-600 hover:text-gray-800 transition-colors text-sm;
+}
+
+.icon-button {
+    @apply p-2 text-gray-600 hover:text-gray-800 transition-colors rounded-full hover:bg-gray-100 flex items-center justify-center;
+}
