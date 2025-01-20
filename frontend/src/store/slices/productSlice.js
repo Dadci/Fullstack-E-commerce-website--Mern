@@ -5,7 +5,7 @@ import axios from 'axios';
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
     async () => {
-        const response = await axios.get('http://localhost:5000/api/products');
+        const response = await axios.get('http://localhost:5500/api/products');
         return response.data;
     }
 );
@@ -13,15 +13,15 @@ export const fetchProducts = createAsyncThunk(
 export const createProduct = createAsyncThunk(
     'products/createProduct',
     async (productData) => {
-        const response = await axios.post('http://localhost:5000/api/products', productData);
+        const response = await axios.post('http://localhost:5500/api/products', productData);
         return response.data;
     }
 );
 
 export const updateProduct = createAsyncThunk(
     'products/updateProduct',
-    async (productData) => {
-        const response = await axios.put(`http://localhost:5000/api/products/${productData._id}`, productData);
+    async ({id, data}) => {
+        const response = await axios.put(`http://localhost:5500/api/products/${id}`, data);
         return response.data;
     }
 );
@@ -29,7 +29,7 @@ export const updateProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
     'products/deleteProduct',
     async (productId) => {
-        await axios.delete(`http://localhost:5000/api/products/${productId}`);
+        await axios.delete(`http://localhost:5500/api/products/${productId}`);
         return productId;
     }
 );
