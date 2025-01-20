@@ -33,8 +33,8 @@ const offers = [
                     <div aria-hidden="true" className="absolute hidden h-full w-1/2 bg-gray-100 lg:block" />
                     <div className="relative bg-gray-100 lg:bg-transparent">
                         <div className="mx-auto max-w-8xl px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:px-8">
-                            <div className="mx-auto w-full max-w-full py-24  lg:py-44  items-center">
-                                <div className="lg:pr-24">
+                            <div className="mx-auto w-full max-w-full py-24 lg:py-44 flex items-center justify-center">
+                                <div className="lg:pr-24 text-left">
                                     <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl xl:text-7xl">
                                         The Future Is Here
                                     </h1>
