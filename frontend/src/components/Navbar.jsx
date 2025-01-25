@@ -27,8 +27,8 @@ export default function Navbar() {
 
             {/* Navigation */}
             <header className="relative bg-white">
-                <nav aria-label="Top" className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
-                    <div className="border-b border-gray-200">
+                <nav aria-label="Top" className="mx-auto  px-4 sm:px-6 lg:px-8 border-b border-gray-200">
+                    <div className="">
                         <div className="flex h-16 items-center justify-between">
                             {/* Logo */}
                             <div className="flex lg:flex-1">
