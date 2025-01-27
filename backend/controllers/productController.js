@@ -97,7 +97,27 @@ const deleteProduct = async (req, res) => {
     }
 }
 
-export { getProducts, createProduct, updateProduct, deleteProduct };
+const getProductById = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (product) {
+            const productWithBase64Images = {
+                ...product.toObject(),
+                images: product.images.map(img => ({
+                    ...img,
+                    data: img.data.toString('base64')
+                }))
+            };
+            res.json(productWithBase64Images);
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+export { getProducts, createProduct, updateProduct, deleteProduct, getProductById };
 
 
 

@@ -34,10 +34,20 @@ export const deleteProduct = createAsyncThunk(
     }
 );
 
+// Add new thunk
+export const getProductById = createAsyncThunk(
+    'products/getProductById',
+    async (id) => {
+        const response = await axios.get(`http://localhost:5500/api/products/${id}`);
+        return response.data;
+    }
+);
+
 const productSlice = createSlice({
     name: 'products',
     initialState: {
         items: [],
+        currentProduct: null,
         status: 'idle',
         error: null
     },
@@ -97,6 +107,18 @@ const productSlice = createSlice({
                 state.items = state.items.filter(item => item._id !== action.payload);
             })
             .addCase(deleteProduct.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            // Get product by id cases
+            .addCase(getProductById.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(getProductById.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.currentProduct = action.payload;
+            })
+            .addCase(getProductById.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });

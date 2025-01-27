@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const categories = [
     { name: 'Smartphones', href: '/category/smartphones' },
@@ -13,6 +14,7 @@ const categories = [
 
 export default function Navbar() {
     const [open, setOpen] = useState(false)
+    const cartItemsCount = useSelector(state => state.cart.items.reduce((total, item) => total + item.quantity, 0))
 
     return (
         <div className="bg-white">
@@ -70,8 +72,8 @@ export default function Navbar() {
                                         className="h-6 w-6 flex-shrink-0 text-gray-700 group-hover:text-gray-500"
                                         aria-hidden="true"
                                     />
-                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                                        0
+                                    <span className="ml-1 text-sm font-medium text-white w-5 h-5 flex items-center justify-center rounded-full bg-blue-800 group-hover:text-gray-200">
+                                        {cartItemsCount}
                                     </span>
                                 </Link>
                             </div>

@@ -2,46 +2,72 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from '../store/slices/productSlice';
 import { Link } from 'react-router-dom';
+import { addToCart } from '../store/slices/cartSlice';
 
 // Separate component for Product Card to improve readability
-const ProductCard = ({ product }) => (
-    <div className="group relative">
-        <div className="h-56 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-72 xl:h-80">
-            <img
-                src={`data:${product.images[0]?.contentType};base64,${product.images[0]?.data}`}
-                alt={product.name}
-                className="h-full w-full object-cover object-center"
-                loading="lazy" // Add lazy loading for better performance
-            />
-        </div>
-        <h3 className="mt-4 text-sm text-gray-700">
-            <Link to={`/product/${product._id}`}>
-                <span className="absolute inset-0" />
-                {product.name}
-            </Link>
-        </h3>
-        <p className="mt-1 text-sm text-gray-500">{product.category}</p>
-        <div className="mt-1 flex items-center justify-between"></div>
-            <p className="text-sm font-medium pb-2 text-gray-900">
-                {product.discount > 0 ? (
-                    <>
-                        ${((product.price * (100 - product.discount)) / 100).toFixed(2)}
-                        <span className="text-gray-500 line-through ml-2">
-                            ${product.price?.toFixed(2)}
+const ProductCard = ({ product }) => {
+    const dispatch = useDispatch();
+
+    const handleAddToCart = (e, product) => {
+        e.preventDefault();
+        dispatch(addToCart({
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            images: product.images,
+            discount: product.discount,
+            quantity: 1
+        }));
+    };
+
+    return (
+        <Link to={`/product/${product._id}`} className="block">
+            <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                {/* Image */}
+                <div className="relative h-64 overflow-hidden rounded-t-lg">
+                    <img 
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+                        src={`data:${product.images[0]?.contentType};base64,${product.images[0]?.data}`}
+                        alt={product.name} 
+                    />
+                    {product.discount > 0 && (
+                        <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+                            -{product.discount}%
                         </span>
-                    </>
-                ) : (
-                    `$${product.price?.toFixed(2)}`
-                )}
-            </p>
-            {product.discount > 0 && (
-                <span className="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded">
-                    {product.discount}% OFF
-                </span>
-            )}
-        </div>
-    
-);
+                    )}
+                </div>
+        
+                {/* Content */}
+                <div className="p-4">
+                    <span className="text-xs font-medium text-gray-500">{product.category}</span>
+                    <h3 className="mt-1 text-lg font-medium text-gray-900 hover:text-blue-600">{product.name}</h3>
+                    
+                    <div className="mt-2 flex items-center justify-between">
+                        <div className="flex items-baseline gap-2">
+                            <span className="text-lg font-bold text-gray-900">
+                                ${((product.price * (100 - product.discount)) / 100).toFixed(2)}
+                            </span>
+                            {product.discount > 0 && (
+                                <span className="text-sm text-gray-400 line-through">
+                                    ${product.price?.toFixed(2)}
+                                </span>
+                            )}
+                        </div>
+                        <button 
+                            className="text-white bg-blue-500 p-2 rounded-full hover:bg-blue-600"
+                            onClick={(e) => handleAddToCart(e, product)}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Link>
+    );
+};
 
 // Loading and Error components
 const Loading = () => (
@@ -70,7 +96,7 @@ function ProductList() {
     if (status === 'failed') return <Error message={error} />;
 
     return (
-        <div className="bg-white">
+        <div className="bg-slate-50">
             <div className="mx-auto  px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
                 <div className="md:flex md:items-center md:justify-between">
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900">Trending products</h2>

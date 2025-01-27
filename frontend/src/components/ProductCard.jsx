@@ -42,38 +42,55 @@ const ProductCard = () => {
     return (
         <>
             {items.map(product => (
-                <div className="group relative block overflow-hidden  w-full" key={product._id}>
+                <div className="group relative flex flex-col bg-white border rounded-lg shadow-sm overflow-hidden" key={product._id}>
+                    {/* Image Container */}
+                    <div className="aspect-w-4 aspect-h-3 bg-gray-200 group-hover:opacity-75">
+                        <img
+                            src={product.image}
+                            alt={product.name}
+                            className="h-full w-full object-cover object-center"
+                        />
+                    </div>
 
-                    <img
-                        src={product.image}
-                        alt=""
-                        className=" aspect-auto w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-                    />
+                    {/* Content Container */}
+                    <div className="flex flex-col flex-1 p-4">
+                        {/* Top Row - Category & Price */}
+                        <div className="flex items-center justify-between mb-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                {product.category}
+                            </span>
+                            <span className="text-lg font-bold text-gray-900">
+                                ${product.price}
+                            </span>
+                        </div>
 
-                    <div className="relative border border-gray-200 bg-white p-6">
+                        {/* Product Name */}
+                        <h3 className="text-sm font-medium text-gray-900 group-hover:text-indigo-600 mb-1">
+                            {product.name}
+                        </h3>
 
-                        <span className="whitespace-nowrap bg-teal-500 px-3 py-1.5 text-xs font-medium text-white rounded"> {product.category} </span>
+                        {/* Description */}
+                        <p className="mt-1 text-sm text-gray-500 line-clamp-2 flex-grow">
+                            {product.description}
+                        </p>
 
-                        <h3 className="mt-4 text-lg font-medium text-gray-900">{product.name}</h3>
-
-                        <p className="mt-1.5 text-sm text-gray-700 font-medium">${product.price}</p>
-                        <p className="mt-1.5 text-sm text-gray-700">{product.description}</p>
-
-                        <form className="mt-4 flex gap-4">
+                        {/* Action Buttons */}
+                        <div className="mt-4 flex items-center gap-2">
                             <button
                                 type="button"
-                                className="block w-full rounded bg-blue-500 text-white p-2.5 text-sm font-medium transition "
+                                className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 onClick={() => navigate(`/edit/${product._id}`)}
                             >
                                 Edit
                             </button>
                             <button
                                 type="button"
-                                className="block w-full rounded bg-indigo-400 text-white p-2.5 text-sm font-medium transition "
+                                className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 onClick={() => handleDelete(product._id)}
-                            >Delete
+                            >
+                                Delete
                             </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             ))}

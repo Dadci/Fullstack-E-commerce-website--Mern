@@ -5,43 +5,28 @@ import Cart from '../models/cart.model.js';
 // Create new order
 export const createOrder = async (req, res) => {
     try {
-        const { cartId, shippingAddress, paymentMethod } = req.body;
+        const { items, totalAmount, shippingAddress, paymentMethod } = req.body;
+        console.log('Received order data:', req.body); // Debug log
 
-        // Get cart and validate
-        const cart = await Cart.findById(cartId).populate('items.product');
-        if (!cart) {
-            return res.status(404).json({ message: 'Cart not found' });
-        }
-
-        // Calculate total amount
-        const totalAmount = cart.items.reduce((total, item) => {
-            return total + (item.product.price * item.quantity);
-        }, 0);
-
-        // Create order items from cart items
-        const orderItems = cart.items.map(item => ({
-            product: item.product._id,
-            quantity: item.quantity,
-            price: item.product.price
-        }));
-
-        // Create new order
+        // Create new order directly from request data
         const order = new Order({
-            cart: cartId,
-            items: orderItems,
+            items: items.map(item => ({
+                product: item.product,
+                quantity: item.quantity,
+                price: item.price
+            })),
             totalAmount,
             shippingAddress,
             paymentMethod,
+            status: 'pending',
+            paymentStatus: 'pending'
         });
 
-        await order.save();
-
-        // Clear the cart after order creation
-        cart.items = [];
-        await cart.save();
-
-        res.status(201).json(order);
+        const savedOrder = await order.save();
+        console.log('Order saved:', savedOrder); // Debug log
+        res.status(201).json(savedOrder);
     } catch (error) {
+        console.error('Order creation error:', error); // Debug log
         res.status(500).json({ message: error.message });
     }
 };
